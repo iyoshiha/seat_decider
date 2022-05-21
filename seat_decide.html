@@ -10,6 +10,7 @@
 <body>
     <h1>席決め君</h1>
     <div id="starter_input">
+        <p id="excessive_num_err"></p>
         <input id="number_of_boys" type="number" value="8" placeholder="男の人数">
         <input id="number_of_girls" type="number" value="4" placeholder="女の人数">
         <button id="dicide_number" onclick="decide()">決定</button>
@@ -77,13 +78,65 @@
             }
         create_seat_order('row1', total_num / 2 + odd_flag);
         create_seat_order('row2', total_num);
+
+        seatInfo.init_info(boys_number, girls_number);
+
     }
-    
+
+    let seatInfo = {
+        total_boy_num:0,
+        total_girl_num:0,
+        current_boy:0,
+        current_girl:0,
+        init_info:function(boys_num, girls_num) {
+            seatInfo.total_boy_num = boys_num;
+            seatInfo.total_girl_num = girls_num;
+            seatInfo.current_boy = boys_num;
+            seatInfo.current_girl = girls_num;
+        },
+        array_boy:[],
+        new_array_boy:[],
+        array_girl:[],
+        new_array_girl:[],
+        shuffle:function(array, new_array){
+            while (array.length > 0) {
+                n = array.length;
+                k = Math.floor(Math.random() * n)
+
+                new_array.push(array[k]);
+                array.splice(k,1);
+            }
+        },
+        input_array:function(num, array){
+            for (let i = 0; i < num; i++){
+                array[i] = i + 1;
+            }
+        },
+
+
+    }
+
     function change_to_girl(obj){
-        console.log(obj.id);
+        console.log(obj.id.value);
+        seatInfo.current_boy--;
+        seatInfo.current_girl++;
+        
+        check_number(seatInfo);
     }
     function change_to_boy(obj){
         console.log(obj.id);
+        seatInfo.current_boy++;
+        seatInfo.current_girl--;
+        check_number(seatInfo);
+    }
+
+    function check_number(seatInfo) {
+        if (seatInfo.current_boy != seatInfo.total_boy_num){
+            document.getElementById('excessive_num_err').textContent = "人数が合っていません"; 
+
+        }else if (seatInfo.current_boy == seatInfo.total_boy_num){
+            document.getElementById('excessive_num_err').textContent = ""; 
+        }
     }
 
 </script>
@@ -100,6 +153,10 @@
     }
     table tr td{
         border: 5px solid;
+    }
+
+    #excessive_num_err {
+        color: red;
     }
 
     .girl_seat_button{
