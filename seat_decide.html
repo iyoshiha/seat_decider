@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <h1>席決め君</h1>
+    <div id="starter_input">
+        <input id="number_of_boys" type="number" value="8" placeholder="男の人数">
+        <input id="number_of_girls" type="number" value="4" placeholder="女の人数">
+        <button id="dicide_number" onclick="decide()">決定</button>
+    </div>
+
+    <input id="text_input" type="text" value="nice">
+    <button id="button_change" class="seat_button" onclick="change()">ok</button>
+    <div id="row1"></div>
+    <div id="row2"></div>
+
+
+</body>
+</html>
+
+<script>
+            let seat_tag_obj = {
+            onclick2boy:'onclick="change_to_boy(this)"',
+            onclick2girl:'onclick="change_to_girl(this)"',
+            class_boy:'class="boy_seat_button"',
+            class_girl:'class="girt_seat_button"',
+            bind_boy:this.class_boy + ' ' + this.onclick2girl,
+            bind_girl:this.class_girl+ ' ' + this.onclick2boy,
+        }
+
+    function change(){
+        document.getElementById('button_change').textContent = 
+        document.getElementById('text_input').value;
+        
+    }
+
+    function decide(){
+        const boys_number = Number(document.getElementById('number_of_boys').value);
+        const girls_number = Number(document.getElementById('number_of_girls').value);
+        const total_num = girls_number + boys_number;
+        const odd_flag = total_num % 2;
+        let boy_remain_num = boys_number;
+        let girl_remain_num = girls_number;
+
+
+        let id_num = 1;
+
+        function create_seat_order(seat_class, times) {
+            let row1 = document.getElementById(seat_class);
+            for (; id_num <= times ; id_num++){
+                if (boy_remain_num <= 0){
+                    row1.innerHTML 
+                    += `<button id="seat${id_num}" ${seat_tag_obj.class_boy}></button>`
+                    continue;
+                }else if(girl_remain_num <= 0){
+                    row1.innerHTML 
+                    += `<button id="seat${id_num}" ${seat_tag_obj.bind_boy}></button>`
+                    continue;
+                }
+
+                if (boy_remain_num-- > 0 && id_num % 2 == 1){
+                    row1.innerHTML
+                    += `<button id="seat${id_num}" ${seat_tag_obj.bind_boy}></button>`
+                } else {
+                    row1.innerHTML 
+                    += `<button id="seat${id_num}" ${seat_tag_obj.bind_girl}></button>`
+                }
+            }
+            }
+        create_seat_order('row1', total_num / 2 + odd_flag);
+        create_seat_order('row2', total_num / 2);
+    }
+    
+    function change_to_girl(obj){
+        console.log(obj);
+    }
+    function change_to_boy(obj){
+        console.log(obj);
+    }
+
+</script>
+
+<style>
+    table{
+        border: 5px solid;
+        color: black;
+    }
+    table tr{
+        border: 5px solid;
+        border-radius: 50%;
+        color: skyblue;
+    }
+    table tr td{
+        border: 5px solid;
+    }
+
+    .girl_seat_button{
+        border-radius:50% ;
+        border: none;
+        background-color: red;
+        color: white;
+        padding: 20px;
+        margin: 4px 2px;
+        cursor: pointer;
+        font-size: large;
+    }
+    .boy_seat_button{
+        border-radius:50% ;
+        border: none;
+        background-color: blue;
+        color: white;
+        padding: 20px;
+        margin: 4px 2px;
+        cursor: pointer;
+        font-size: large;
+    }
+    img {
+        border-radius: 50%;
+        width: 180px;
+        height: 180px;
+    }
+</style>
