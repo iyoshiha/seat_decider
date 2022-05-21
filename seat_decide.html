@@ -81,6 +81,10 @@
 
         seatInfo.init_info(boys_number, girls_number);
 
+
+
+        seatInfo.shuffle(seatInfo.array_boy, seatInfo.new_array_boy);
+
     }
 
     let seatInfo = {
@@ -99,6 +103,7 @@
         array_girl:[],
         new_array_girl:[],
         shuffle:function(array, new_array){
+            this.input_array(this.total_boy_num, this.array_boy)
             while (array.length > 0) {
                 n = array.length;
                 k = Math.floor(Math.random() * n)
