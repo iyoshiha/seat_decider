@@ -55,24 +55,20 @@
             let row = document.getElementById(seat_class);
             for (; id_num <= times ; id_num++){
                 if (boy_remain_num <= 0){
-                    console.log('bremi');
                     row.innerHTML 
                     += `<button id="seat${id_num}" class="girl_seat_button" onclick="change_to_boy(this)"></button>`
                     continue;
                 }else if(girl_remain_num <= 0){
-                    console.log('gremi');
                     row.innerHTML 
                     += `<button id="seat${id_num}" class="boy_seat_button" onclick="change_to_girl(this)"></button>`
                     continue;
                 }
 
-                if (boy_remain_num-- > 0 && id_num % 2 == 1){
-                    console.log('boy remi ' + (boy_remain_num));
+                if (boy_remain_num > 0 && id_num % 2 == 1){
                     row.innerHTML
                     += `<button id="seat${id_num}" class="boy_seat_button" onclick="change_to_girl(this)"></button>`
-                    // boy_remain_num--;
+                    boy_remain_num--;
                 } else {
-                    console.log('3');
                     row.innerHTML 
                     += `<button id="seat${id_num}" class="girl_seat_button" onclick="change_to_boy(this)"></button>`
                     girl_remain_num--;
