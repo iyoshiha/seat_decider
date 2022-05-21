@@ -15,10 +15,10 @@
         <button id="dicide_number" onclick="decide()">決定</button>
     </div>
 
-    <input id="text_input" type="text" value="nice">
-    <button id="button_change" class="seat_button" onclick="change()">ok</button>
     <div id="row1"></div>
     <div id="row2"></div>
+
+    <button id="allocate_button" onclick="allocate_seats()">allocate</button>
 
 
 </body>
@@ -48,29 +48,29 @@
         let boy_remain_num = boys_number;
         let girl_remain_num = girls_number;
 
-
         let id_num = 1;
 
         function create_seat_order(seat_class, times) {
             let row = document.getElementById(seat_class);
+            row.innerHTML = '';
             for (; id_num <= times ; id_num++){
                 if (boy_remain_num <= 0){
                     row.innerHTML 
-                    += `<button id="seat${id_num}" class="girl_seat_button" onclick="change_to_boy(this)"></button>`
+                    += `<button id="id${id_num}" class="girl_seat_button" onclick="change_to_boy(this)"></button>`
                     continue;
                 }else if(girl_remain_num <= 0){
                     row.innerHTML 
-                    += `<button id="seat${id_num}" class="boy_seat_button" onclick="change_to_girl(this)"></button>`
+                    += `<button id="id${id_num}" class="boy_seat_button" onclick="change_to_girl(this)"></button>`
                     continue;
                 }
 
                 if (boy_remain_num > 0 && id_num % 2 == 1){
                     row.innerHTML
-                    += `<button id="seat${id_num}" class="boy_seat_button" onclick="change_to_girl(this)"></button>`
+                    += `<button id="id${id_num}" class="boy_seat_button" onclick="change_to_girl(this)"></button>`
                     boy_remain_num--;
                 } else {
                     row.innerHTML 
-                    += `<button id="seat${id_num}" class="girl_seat_button" onclick="change_to_boy(this)"></button>`
+                    += `<button id="id${id_num}" class="girl_seat_button" onclick="change_to_boy(this)"></button>`
                     girl_remain_num--;
                 }
             }
@@ -80,10 +80,10 @@
     }
     
     function change_to_girl(obj){
-        console.log(obj.class);
+        console.log(obj.id);
     }
     function change_to_boy(obj){
-        console.log(obj);
+        console.log(obj.id);
     }
 
 </script>
