@@ -81,10 +81,6 @@
 
         seatInfo.init_info(boys_number, girls_number);
 
-
-
-        seatInfo.shuffle(seatInfo.array_boy, seatInfo.new_array_boy);
-
     }
 
     let seatInfo = {
@@ -99,11 +95,10 @@
             seatInfo.current_girl = girls_num;
         },
         array_boy:[],
-        new_array_boy:[],
         array_girl:[],
-        new_array_girl:[],
-        shuffle:function(array, new_array){
-            this.input_array(this.total_boy_num, this.array_boy)
+        shuffle:function(new_array, total_num){
+            let array = this.input_array(total_num)
+            new_array.splice(0);
             while (array.length > 0) {
                 n = array.length;
                 k = Math.floor(Math.random() * n)
@@ -112,10 +107,12 @@
                 array.splice(k,1);
             }
         },
-        input_array:function(num, array){
+        input_array:function(num){
+            let array = [];
             for (let i = 0; i < num; i++){
                 array[i] = i + 1;
             }
+            return array;
         },
 
 
@@ -147,10 +144,8 @@
 </script>
 
 <style>
-    table{
-        border: 5px solid;
-        color: black;
-    }
+
+
     table tr{
         border: 5px solid;
         border-radius: 50%;
