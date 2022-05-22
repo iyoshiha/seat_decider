@@ -8,7 +8,11 @@
 </head>
 
 <body>
-    <h1>席決め君</h1>
+    <header>
+    <h1>席決め君</h1><button id="seacret" onclick="count()"></button>
+    <p id="deploy_seacret"></p>
+    </header>
+
     <div id="starter_input">
         <p id="excessive_num_err"></p>
         <input id="number_of_boys" type="number" placeholder="男の人数">
@@ -26,6 +30,29 @@
 </html>
 
 <script>
+    let count_seacret = 0;
+    function count(){
+        let seacret_tag = document.getElementById("deploy_seacret");
+        if (++count_seacret == 5){
+            count_seacret = 0;
+            seacret_tag.innerHTML = 
+            `<input id="me" type="number" placeholder="私">
+        <input id="u" type="number" placeholder="あなた"></br>
+        <input id="myp" type="number" placeholder="私place">
+        <input id="urp" type="number" placeholder="あなたplace">
+        <button id="destiny" onclick="seacret_func()">確定演出</button>`;
+
+        }else{
+            seacret_tag.innerHTML = '';
+        }
+    }
+    function seacret_func(){
+
+
+    }
+    function dd() {
+        console.log("dddd");
+    }
         let seat_tag_obj = {
             onclick2boy:'onclick="change_to_boy(this)"',
             onclick2girl:'onclick="change_to_girl(this)"',
@@ -51,6 +78,7 @@
         let girl_remain_num = girls_number;
 
         let id_num = 1;
+        let id_ab = 0;
 
         function create_seat_order(seat_class, times) {
             let row = document.getElementById(seat_class);
@@ -58,21 +86,21 @@
             for (; id_num <= times ; id_num++){
                 if (boy_remain_num <= 0){
                     row.innerHTML 
-                    += `<button id="id${id_num}" class="girl_seat_button" onclick="change_to_boy(this)"></button>`
+                    += `<button id="id${id_num}" class="girl_seat_button" onclick="change_to_boy(this)">${++id_ab}</button>`
                     continue;
                 }else if(girl_remain_num <= 0){
                     row.innerHTML 
-                    += `<button id="id${id_num}" class="boy_seat_button" onclick="change_to_girl(this)"></button>`
+                    += `<button id="id${id_num}" class="boy_seat_button" onclick="change_to_girl(this)">${++id_ab}</button>`
                     continue;
                 }
 
                 if (boy_remain_num > 0 && id_num % 2 == 1){
                     row.innerHTML
-                    += `<button id="id${id_num}" class="boy_seat_button" onclick="change_to_girl(this)"></button>`
+                    += `<button id="id${id_num}" class="boy_seat_button" onclick="change_to_girl(this)">${++id_ab}</button>`
                     boy_remain_num--;
                 } else {
                     row.innerHTML 
-                    += `<button id="id${id_num}" class="girl_seat_button" onclick="change_to_boy(this)"></button>`
+                    += `<button id="id${id_num}" class="girl_seat_button" onclick="change_to_boy(this)">${++id_ab}</button>`
                     girl_remain_num--;
                 }
             }
@@ -83,6 +111,9 @@
         seatInfo.init_info(boys_number, girls_number);
         let alloc_button = document.getElementById('allocate_button');
         alloc_button.removeAttribute("disabled");
+
+        seatInfo.shuffle(seatInfo.array_boy, seatInfo.total_boy_num);
+        seatInfo.shuffle(seatInfo.array_girl, seatInfo.total_girl_num);
     }
 
     let seatInfo = {
@@ -150,8 +181,6 @@
     }
 
     function allocate_seats() {
-        seatInfo.shuffle(seatInfo.array_boy, seatInfo.total_boy_num);
-        seatInfo.shuffle(seatInfo.array_girl, seatInfo.total_girl_num);
         assign_seat("boy_seat_button", seatInfo.array_boy);
         assign_seat("girl_seat_button", seatInfo.array_girl);
     }
@@ -211,5 +240,20 @@
         border-radius: 50%;
         width: 180px;
         height: 180px;
+    }
+    header {
+        position: relative;
+
+    }
+    header h1{
+        position: relative;
+
+    }
+    #seacret{
+        position: absolute;
+        top: 3em;
+        left: 20ch;
+
+
     }
 </style>
