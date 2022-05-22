@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <h1>席決め君</h1>
+    <div id="starter_input">
+        <p id="excessive_num_err"></p>
+        <input id="number_of_boys" type="number" value="8" placeholder="男の人数">
+        <input id="number_of_girls" type="number" value="4" placeholder="女の人数">
+        <button id="dicide_number" onclick="decide()">決定</button>
+    </div>
+
+    <div id="row1"></div>
+    <div id="row2"></div>
+
+    <button id="allocate_button" onclick="allocate_seats()">allocate</button>
+
+
+</body>
+</html>
+
+<script>
+        let seat_tag_obj = {
+            onclick2boy:'onclick="change_to_boy(this)"',
+            onclick2girl:'onclick="change_to_girl(this)"',
+            class_boy:'class="boy_seat_button"',
+            class_girl:'class="girt_seat_button"',
+            bind_boy:this.class_boy + ' ' + this.onclick2girl,
+            bind_girl:this.class_girl+ ' ' + this.onclick2boy,
+        }
+
+    function change(){
+        document.getElementById('button_change').textContent = 
+        document.getElementById('text_input').value;
+        
+    }
+
+    function decide(){
+        const boys_number = Number(document.getElementById('number_of_boys').value);
+        const girls_number = Number(document.getElementById('number_of_girls').value);
+        const total_num = girls_number + boys_number;
+        seatInfo.total_num = total_num;
+        const odd_flag = total_num % 2;
+        let boy_remain_num = boys_number;
+        let girl_remain_num = girls_number;
+
+        let id_num = 1;
+
+        function create_seat_order(seat_class, times) {
+            let row = document.getElementById(seat_class);
+            row.innerHTML = '';
+            for (; id_num <= times ; id_num++){
+                if (boy_remain_num <= 0){
+                    row.innerHTML 
+                    += `<button id="id${id_num}" class="girl_seat_button" onclick="change_to_boy(this)"></button>`
+                    continue;
+                }else if(girl_remain_num <= 0){
+                    row.innerHTML 
+                    += `<button id="id${id_num}" class="boy_seat_button" onclick="change_to_girl(this)"></button>`
+                    continue;
+                }
+
+                if (boy_remain_num > 0 && id_num % 2 == 1){
+                    row.innerHTML
+                    += `<button id="id${id_num}" class="boy_seat_button" onclick="change_to_girl(this)"></button>`
+                    boy_remain_num--;
+                } else {
+                    row.innerHTML 
+                    += `<button id="id${id_num}" class="girl_seat_button" onclick="change_to_boy(this)"></button>`
+                    girl_remain_num--;
+                }
+            }
+            }
+        create_seat_order('row1', total_num / 2 + odd_flag);
+        create_seat_order('row2', total_num);
+
+        seatInfo.init_info(boys_number, girls_number);
+    }
+
+    let seatInfo = {
+        total_boy_num:0,
+        total_girl_num:0,
+        total_num:0,
+        current_boy:0,
+        current_girl:0,
+        init_info:function(boys_num, girls_num) {
+            seatInfo.total_boy_num = boys_num;
+            seatInfo.total_girl_num = girls_num;
+            seatInfo.current_boy = boys_num;
+            seatInfo.current_girl = girls_num;
+        },
+        array_boy:[],
+        array_girl:[],
+        shuffle:function(new_array, total_num){
+            let array = this.input_array(total_num)
+            new_array.splice(0);
+            while (array.length > 0) {
+                n = array.length;
+                k = Math.floor(Math.random() * n)
+
+                new_array.push(array[k]);
+                array.splice(k,1);
+            }
+        },
+        input_array:function(num){
+            let array = [];
+            for (let i = 0; i < num; i++){
+                array[i] = i + 1;
+            }
+            return array;
+        },
+        correct_num_flag:true,
+
+
+
+    }
+
+    function change_to_girl(obj){
+        let ele = document.getElementById(obj.id.toString())
+        ele.setAttribute("class", "girl_seat_button")
+        ele.setAttribute("onclick", "change_to_boy(this)")
+        seatInfo.current_boy--;
+        seatInfo.current_girl++;
+        check_number(seatInfo);
+    }
+    function change_to_boy(obj){
+        let ele = document.getElementById(obj.id.toString())
+        ele.setAttribute("class", "boy_seat_button")
+        ele.setAttribute("onclick", "change_to_girl(this)")
+        seatInfo.current_boy++;
+        seatInfo.current_girl--;
+        check_number(seatInfo);
+    }
+
+    function check_number(seatInfo) {
+        if (seatInfo.current_boy != seatInfo.total_boy_num){
+            document.getElementById('excessive_num_err').textContent = "人数が合っていません"; 
+
+        }else if (seatInfo.current_boy == seatInfo.total_boy_num){
+            document.getElementById('excessive_num_err').textContent = ""; 
+        }
+    }
+
+    function allocate_seats() {
+        seatInfo.shuffle(seatInfo.array_boy, seatInfo.total_boy_num);
+        seatInfo.shuffle(seatInfo.array_girl, seatInfo.total_girl_num);
+        assign_seat("boy_seat_button", seatInfo.array_boy);
+        assign_seat("girl_seat_button", seatInfo.array_girl);
+    }
+
+    function assign_seat(seat_type, order_array){
+        let array = document.getElementsByClassName(seat_type)
+        for (let i = 0; i < array.length; i++) {
+            array[i].textContent = order_array[i];
+        }
+
+    }
+
+</script>
+
+<style>
+
+
+    table tr{
+        border: 5px solid;
+        border-radius: 50%;
+        color: skyblue;
+    }
+    table tr td{
+        border: 5px solid;
+    }
+
+    #excessive_num_err {
+        color: red;
+    }
+
+    .girl_seat_button{
+        border-radius:50% ;
+        border: none;
+        background-color: red;
+        color: white;
+        padding: 20px;
+        margin: 4px 2px;
+        cursor: pointer;
+        font-size: large;
+    }
+    .boy_seat_button{
+        border-radius:50% ;
+        border: none;
+        background-color: blue;
+        color: white;
+        padding: 20px;
+        margin: 4px 2px;
+        cursor: pointer;
+        font-size: large;
+    }
+    img {
+        border-radius: 50%;
+        width: 180px;
+        height: 180px;
+    }
+</style>
