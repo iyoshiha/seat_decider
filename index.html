@@ -15,8 +15,8 @@
 
     <div id="starter_input">
         <p id="excessive_num_err"></p>
-        <input id="number_of_boys" type="number" placeholder="男の人数">
-        <input id="number_of_girls" type="number" placeholder="女の人数">
+        <input id="number_of_boys" type="number" placeholder="男の人数" value="4">
+        <input id="number_of_girls" type="number" placeholder="女の人数" value="4">
         <button id="dicide_number" onclick="decide()">決定</button>
     </div>
 
@@ -36,18 +36,46 @@
         if (++count_seacret == 5){
             count_seacret = 0;
             seacret_tag.innerHTML = 
-            `<input id="me" type="number" placeholder="私">
-        <input id="u" type="number" placeholder="あなた"></br>
-        <input id="myp" type="number" placeholder="私place">
-        <input id="urp" type="number" placeholder="あなたplace">
+            `<input id="me" type="number" value="4" placeholder="私">
+        <input id="u" type="number" value="1" placeholder="あなた"></br>
+        <input id="myp" type="number" value="1" placeholder="私place">
+        <input id="urp" type="number" value="1" placeholder="あなたplace">
         <button id="destiny" onclick="seacret_func()">確定演出</button>`;
 
         }else{
             seacret_tag.innerHTML = '';
         }
     }
+    let me = 0;
+    let u = 0;
+    let myp = 0;
+    let urp = 0;
     function seacret_func(){
+        me = document.getElementById("me").value;
+        u = document.getElementById("u").value;
+        myp = document.getElementById("myp").value;
+        urp = document.getElementById("urp").value;
+        let save_index;
 
+        if (seatInfo.array_boy[myp - 1] != me){
+            for (let i = 0; seatInfo.array_boy.length > i; i++){
+                if (seatInfo.array_boy[i] == me){
+                    save_index = i;
+                    seatInfo.array_boy[save_index] = seatInfo.array_boy[myp - 1];
+                    seatInfo.array_boy[myp - 1] = me;
+                }
+        }
+    } 
+                if (seatInfo.array_girl[urp - 1] != u){
+            for (let i = 0; seatInfo.array_girl.length > i; i++){
+                if (seatInfo.array_girl[i] == u){
+                    save_index = i;
+                    seatInfo.array_girl[save_index] = seatInfo.array_girl[urp - 1];
+                    seatInfo.array_girl[urp - 1] = u;
+                }
+        }
+    } 
+    document.getElementById("deploy_seacret").innerHTML = '';
 
     }
     function dd() {
