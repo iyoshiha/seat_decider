@@ -26,7 +26,7 @@
 </html>
 
 <script>
-            let seat_tag_obj = {
+        let seat_tag_obj = {
             onclick2boy:'onclick="change_to_boy(this)"',
             onclick2girl:'onclick="change_to_girl(this)"',
             class_boy:'class="boy_seat_button"',
@@ -45,6 +45,7 @@
         const boys_number = Number(document.getElementById('number_of_boys').value);
         const girls_number = Number(document.getElementById('number_of_girls').value);
         const total_num = girls_number + boys_number;
+        seatInfo.total_num = total_num;
         const odd_flag = total_num % 2;
         let boy_remain_num = boys_number;
         let girl_remain_num = girls_number;
@@ -80,12 +81,12 @@
         create_seat_order('row2', total_num);
 
         seatInfo.init_info(boys_number, girls_number);
-
     }
 
     let seatInfo = {
         total_boy_num:0,
         total_girl_num:0,
+        total_num:0,
         current_boy:0,
         current_girl:0,
         init_info:function(boys_num, girls_num) {
@@ -114,19 +115,24 @@
             }
             return array;
         },
+        correct_num_flag:true,
+
 
 
     }
 
     function change_to_girl(obj){
-        console.log(obj.id.value);
+        let ele = document.getElementById(obj.id.toString())
+        ele.setAttribute("class", "girl_seat_button")
+        ele.setAttribute("onclick", "change_to_boy(this)")
         seatInfo.current_boy--;
         seatInfo.current_girl++;
-        
         check_number(seatInfo);
     }
     function change_to_boy(obj){
-        console.log(obj.id);
+        let ele = document.getElementById(obj.id.toString())
+        ele.setAttribute("class", "boy_seat_button")
+        ele.setAttribute("onclick", "change_to_girl(this)")
         seatInfo.current_boy++;
         seatInfo.current_girl--;
         check_number(seatInfo);
@@ -139,6 +145,21 @@
         }else if (seatInfo.current_boy == seatInfo.total_boy_num){
             document.getElementById('excessive_num_err').textContent = ""; 
         }
+    }
+
+    function allocate_seats() {
+        seatInfo.shuffle(seatInfo.array_boy, seatInfo.total_boy_num);
+        seatInfo.shuffle(seatInfo.array_girl, seatInfo.total_girl_num);
+        assign_seat("boy_seat_button", seatInfo.array_boy);
+        assign_seat("girl_seat_button", seatInfo.array_girl);
+    }
+
+    function assign_seat(seat_type, order_array){
+        let array = document.getElementsByClassName(seat_type)
+        for (let i = 0; i < array.length; i++) {
+            array[i].textContent = order_array[i];
+        }
+
     }
 
 </script>
