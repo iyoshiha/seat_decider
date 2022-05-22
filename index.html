@@ -11,15 +11,15 @@
     <h1>席決め君</h1>
     <div id="starter_input">
         <p id="excessive_num_err"></p>
-        <input id="number_of_boys" type="number" value="8" placeholder="男の人数">
-        <input id="number_of_girls" type="number" value="4" placeholder="女の人数">
+        <input id="number_of_boys" type="number" placeholder="男の人数">
+        <input id="number_of_girls" type="number" placeholder="女の人数">
         <button id="dicide_number" onclick="decide()">決定</button>
     </div>
 
     <div id="row1"></div>
     <div id="row2"></div>
 
-    <button id="allocate_button" onclick="allocate_seats()">allocate</button>
+    <button id="allocate_button" onclick="allocate_seats()" disabled="disabled">割り振り</button>
 
 
 </body>
@@ -81,6 +81,8 @@
         create_seat_order('row2', total_num);
 
         seatInfo.init_info(boys_number, girls_number);
+        let alloc_button = document.getElementById('allocate_button');
+        alloc_button.removeAttribute("disabled");
     }
 
     let seatInfo = {
@@ -190,13 +192,10 @@
         cursor: pointer;
     }
     #allocate_button{
-        border-radius:50% ;
-        border: none;
         background-color: aqua;
-        color: white;
-        padding: 20px;
+        color: black;
+        padding: 10px;
         margin: 4px 2px;
-        font-size: large;
 
     }
     .boy_seat_button{
